@@ -98,7 +98,7 @@ This is a **demo project**. Do **not** use real passwords or sensitive API keys 
 ## 👨‍💻 Developer
 
 **Ateş Altınkaynak**
-Developed by `Karadonlu Şövalye` 🛡️
+Developed by Cage Development - Sapienties Group
 
 ---
 
