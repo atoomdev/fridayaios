@@ -5,11 +5,7 @@ from tkinter import PhotoImage
 from io import BytesIO
 from sys import exit
 from PIL import Image, ImageTk
-from openwakeword import Model
-from openwakeword.utils import download_models
-import numpy as np
 import tkinter as tk
-import sounddevice as sd
 import speech_recognition as sr
 import pyttsx3
 import webbrowser
@@ -26,7 +22,6 @@ import platform
 import psutil
 import socket
 
-download_models()
 os.system("echo off")
 os.system("color a")
 os.system("cls")
@@ -54,7 +49,6 @@ welcome = """
 print(welcome)
 time.sleep(5)
 os.system("cls")
-
 
 light = """
                                                                       
@@ -110,7 +104,6 @@ def listen_for_keyword(keyword="light"):
             pass
         except sr.RequestError as e:
             print(f"Could not request results; {e}")
-
 
 def listen_for_command():
     recognizer = sr.Recognizer()
@@ -364,15 +357,16 @@ def process_query(query):
 
 def run_program():
     while True:
-        if listen_for_keyword():  # Wake word başarılıysa
-            speak("Yes sir?")
-            command = listen_for_command()
-            if command:
-                response = process_query(command)
-                if response and voice_mode:
-                    speak(response)
-
-
+        listen_for_keyword()  # Program başlatıldığında keyword'u dinle
+        if voice_mode:
+            command = listen_for_command()  # Komutu sesli olarak dinle
+        else:
+            command = input("Send Command to LIGHT AI: ")  # Komutu yazılı olarak al
+        if command:
+            response = process_query(command)  # Komutu işle
+            if response:
+                if voice_mode:
+                    speak(response)  # Yanıtı sesli olarak ver
 
 if __name__ == "__main__":
     run_program()
