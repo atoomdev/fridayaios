@@ -1,6 +1,6 @@
-# 💡 Light AI Assistant
+# 💡 Friday AI OS
 
-**Light AI Assistant** is a powerful, modular, and lightweight AI assistant written in Python. It supports both voice and text interaction, integrates with OpenAI’s GPT-3.5 and DALL·E, provides real-time weather data, sends emails, logs IP information, and more. Designed to run efficiently even on modest systems, it serves as a fully interactive, customizable AI companion.
+**Friday AI Assistant** is a powerful, modular, and lightweight AI assistant written in Python. It supports both voice and text interaction, integrates with OpenAI’s GPT-3.5 and DALL·E, provides real-time weather data, sends emails, logs IP information, and more. Designed to run efficiently even on modest systems, it serves as a fully interactive, customizable AI companion.
 
 ---
 
@@ -52,10 +52,10 @@ pip install openai speechrecognition pyttsx3 pillow requests spotipy discord-web
 Run the script using Python:
 
 ```bash
-python light_ai_assistant.py
+python friday.py
 ```
 
-Once launched, say the **keyword** "light" to activate the assistant. You can switch to **text mode** by saying "open chat mode" or back to voice with "open voice mode".
+Once launched, say the **keyword** "friday" to activate the assistant. You can switch to **text mode** by saying "open chat mode" or back to voice with "open voice mode".
 
 ---
 
@@ -63,7 +63,7 @@ Once launched, say the **keyword** "light" to activate the assistant. You can sw
 
 | Command                              | Behavior                            |
 | ------------------------------------ | ----------------------------------- |
-| `light`                              | Wake the assistant                  |
+| `Friday`                             | Wake the assistant                  |
 | `send email`                         | Starts email sending flow           |
 | `imagine`                            | Generates an image with DALL·E 3    |
 | `enable` (password: `12123112`)      | IP logger activation and GUI report |

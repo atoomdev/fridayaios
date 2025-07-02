@@ -25,7 +25,7 @@ import socket
 os.system("echo off")
 os.system("color a")
 os.system("cls")
-os.system(f'title LIGHT ASSISTANT DEMO')
+os.system(f'title FRIDAY AI OS - ALTINKAYNAK INDUSTRIES')
 
 welcome = """
 
@@ -52,19 +52,14 @@ os.system("cls")
 
 light = """
                                                                       
-────────────────────────────────────────────────────────────────────────────
-─██████──────────██████████──██████████████──██████──██████──██████████████─
-─██░░██──────────██░░░░░░██──██░░░░░░░░░░██──██░░██──██░░██──██░░░░░░░░░░██─
-─██░░██──────────████░░████──██░░██████████──██░░██──██░░██──██████░░██████─
-─██░░██────────────██░░██────██░░██──────────██░░██──██░░██──────██░░██─────
-─██░░██────────────██░░██────██░░██──────────██░░██████░░██──────██░░██─────
-─██░░██────────────██░░██────██░░██──██████──██░░░░░░░░░░██──────██░░██─────
-─██░░██────────────██░░██────██░░██──██░░██──██░░██████░░██──────██░░██─────
-─██░░██────────────██░░██────██░░██──██░░██──██░░██──██░░██──────██░░██─────
-─██░░██████████──████░░████──██░░██████░░██──██░░██──██░░██──────██░░██─────
-─██░░░░░░░░░░██──██░░░░░░██──██░░░░░░░░░░██──██░░██──██░░██──────██░░██─────
-─██████████████──██████████──██████████████──██████──██████──────██████─────
-────────────────────────────────────────────────────────────────────────────
+
+
+███████╗██████╗░██╗██████╗░░█████╗░██╗░░░██╗  ░█████╗░██╗  ░█████╗░░██████╗
+██╔════╝██╔══██╗██║██╔══██╗██╔══██╗╚██╗░██╔╝  ██╔══██╗██║  ██╔══██╗██╔════╝
+█████╗░░██████╔╝██║██║░░██║███████║░╚████╔╝░  ███████║██║  ██║░░██║╚█████╗░
+██╔══╝░░██╔══██╗██║██║░░██║██╔══██║░░╚██╔╝░░  ██╔══██║██║  ██║░░██║░╚═══██╗
+██║░░░░░██║░░██║██║██████╔╝██║░░██║░░░██║░░░  ██║░░██║██║  ╚█████╔╝██████╔╝
+╚═╝░░░░░╚═╝░░╚═╝╚═╝╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░  ╚═╝░░╚═╝╚═╝  ░╚════╝░╚═════╝░
 
 """
 print(light)
@@ -85,14 +80,12 @@ def speak(text):
     engine.say(text)
     engine.runAndWait()
 
-def listen_for_keyword(keyword="light"):
+def listen_for_keyword(keyword="friday"):
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
-    
     print("Listening for keyword...")  # Sadece başlangıçta mesajı yazdır
     while True:
         with mic as source:
-            recognizer.adjust_for_ambient_noise(source)
             audio = recognizer.listen(source)
         try:
             text = recognizer.recognize_google(audio)
@@ -108,11 +101,9 @@ def listen_for_keyword(keyword="light"):
 def listen_for_command():
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
-    
     print("Listening for command...")
     with mic as source:
-        recognizer.adjust_for_ambient_noise(source)
-        audio = recognizer.listen(source)
+        audio = recognizer.listen(source, phrase_time_limit=3)
     try:
         command = recognizer.recognize_google(audio)
         print(f"You said: {command}")
@@ -182,18 +173,22 @@ def get_weather():
     temperature = data["current"]["temp_c"]
     return f"The current weather in Ankara, Turkey is {weather} with a temperature of {temperature} degrees and the wind speed is {wind_speed} kilometre per hour, sir."
 
-def generate_response(query):
-    prompt = f"{query}"
-    response = openai.Completion.create(
-        engine='gpt-3.5-turbo-instruct',
-        prompt=prompt,
-        max_tokens=200,  # Daha kısa yanıtlar için uygun değer
-        temperature=0.,  # Yanıtların çeşitliliğini artırır
-        n=1,
-        frequency_penalty=0.5,  # Tekrar eden kelimeleri azaltır
-        presence_penalty=0.5,  # Yeni konu başlıkları ekler
-    )
-    return response.choices[0].text.strip()
+
+def generate_response(prompt):
+    try:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "mistral",
+                "prompt": f"You are Friday OS, a highly intelligent local AI agent with FULL Windows OS access. Give a short and clear answer in 1-2 sentences.\n\nUser: {prompt}\n\nResponse:",
+                "stream": False
+            }
+        )
+        result = response.json()
+        return result.get("response", "").strip()
+    except Exception as e:
+        return str(e)
+
 
 def show_results(ip, hostname, city, region, country, loc, isp, postal, timezone):
     window = tk.Tk()
@@ -292,6 +287,25 @@ def process_query(query):
             enable_ip_logger()
             response = "Complete"
 
+    elif "open downloads" in query:
+        response = "Opening Downloads folder Sir."
+        speak(response)
+        os.startfile("C:\\Users\\atesa\\Downloads")
+
+
+    elif "open chrome" in query:
+        response = "Opening Chrome browser Sir."
+        speak(response)
+        os.system("start chrome")
+
+    elif "mute" in query:
+        response = "Muted"
+        pyautogui.press("volumemute")
+    
+    elif "volume up" in query:
+        response = "Volume up Sir."
+        pyautogui.press("volumeup")
+
     elif "imagine" in query:
         response = "Tell me, what should I imagine?"
         if voice_mode:
@@ -347,7 +361,7 @@ def process_query(query):
 
     else:
         response = generate_response(query)
-        print(response,f" \n(Waiting for speak FN...)\n")
+        print(f"Response: {response}")
         
 
         
@@ -356,12 +370,18 @@ def process_query(query):
 
 
 def run_program():
+
+    mic = sr.Microphone()
+    recognizer = sr.Recognizer()
+    with mic as source:
+        recognizer.adjust_for_ambient_noise(source)
+        
     while True:
         listen_for_keyword()  # Program başlatıldığında keyword'u dinle
         if voice_mode:
             command = listen_for_command()  # Komutu sesli olarak dinle
         else:
-            command = input("Send Command to LIGHT AI: ")  # Komutu yazılı olarak al
+            command = input("Send Command to Friday: ")  # Komutu yazılı olarak al
         if command:
             response = process_query(command)  # Komutu işle
             if response:
