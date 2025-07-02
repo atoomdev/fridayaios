@@ -81,6 +81,7 @@ def speak(text):
     engine.runAndWait()
 
 def listen_for_keyword(keyword="friday"):
+    time.sleep(0.4)
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
     print("Listening for keyword...")  # Sadece başlangıçta mesajı yazdır
@@ -99,6 +100,7 @@ def listen_for_keyword(keyword="friday"):
             print(f"Could not request results; {e}")
 
 def listen_for_command():
+    time.sleep(0.4)
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
     print("Listening for command...")
@@ -130,6 +132,15 @@ def send_email(subject, message):
         server.starttls()
         server.login(sender_email, sender_password)
         server.sendmail(sender_email, recipient_email, email_message)
+    
+def sleep_mode():
+    print("Entering sleep mode...")
+    speak("Entering sleep mode...")
+    input("Press Enter to wake up...")  # Kullanıcıdan bir tuşa basmasını bekle
+    print("Waking up...")
+    speak("I am at your service sir.")
+
+
 
 def send_email_to(subject, message):
     smtp_server = "smtp.gmail.com"
@@ -254,10 +265,10 @@ def process_query(query):
     global voice_mode
     response = ""
 
-    if "hello" in query:
+    if "hello" in query or "hi" in query or "hey" in query or "greetings" in query or "good morning" in query or "good afternoon" in query or "good evening" in query or "good night" in query or "how are you" in query or "how are you doing" in query or "how is it going" in query or "how's it going" in query or "what's up" in query      or "what's going on" in query or "how's everything" in query or "how's everything going" in query or "how's life" in query or "how's your day" in query or "how's your day going" in query or "how's your day been" in query or "how's your day treating you" in query or "how's your day been treating you" in query or "how's your day so far" in query or "how's your day been so far" in query or "how's your day going so far" in query or "how's your day treating you so far" in query  or "how's your day been treating you so far" in query or "how's your day going so far" in query or "how's your day treating you so far" in query:
         response = "Hello sir! How can I assist you today?"
 
-    elif "send email" in query:
+    elif "send email" in query or "send an email" in query or "write an email" in query or "compose an email" in query or "email" in query or "write email" in query or "compose email" in query or "send an email to" in query or "write an email to" in query or "compose an email to" in query or "email to" in query or "write email to" in query or "compose email to" in query or "send an email to someone" in query or "write an email to someone" in query or "compose an email to someone" in query or "email to someone" in query or "write email to someone" in query or "compose email to someone" in query or "send an email to someone" in query or "write an email to someone" in query or "compose an email to someone" in query or "email to someone" in query or "write email to someone" in query or "compose email to someone" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query :
         response = "Sure, please provide the subject of the email."
         if voice_mode:
             speak(response)
@@ -287,13 +298,11 @@ def process_query(query):
             enable_ip_logger()
             response = "Complete"
 
-    elif "open downloads" in query:
+    elif "open downloads" in query or "open download folder" in query or "open my downloads" in query or "open my download folder" in query or "open downloads folder" in query or "open download directory" in query or "open my downloads directory" in query or "open my download directory" in query:
         response = "Opening Downloads folder Sir."
-        speak(response)
         os.startfile("C:\\Users\\atesa\\Downloads")
 
-
-    elif "open chrome" in query:
+    elif "open Chrome" in query or "open Google Chrome" in query or "open web browser" in query or "open my browser" in query or "open my web browser" in query or "open internet browser" in query or "open my internet browser" in query:
         response = "Opening Chrome browser Sir."
         speak(response)
         os.system("start chrome")
@@ -303,7 +312,6 @@ def process_query(query):
         pyautogui.press("volumemute")
     
     elif "volume up" in query:
-        response = "Volume up Sir."
         pyautogui.press("volumeup")
 
     elif "imagine" in query:
@@ -338,6 +346,8 @@ def process_query(query):
             x = f"Ok, saying {say}"
             print(x)
             speak(say)
+    elif "sleep mode" in query or "sleep" in query or "enter sleep mode" in query or "enter sleep" in query or "go to sleep" in query or "go to sleep mode" in query or "sleep mode on" in query or "sleep on" in query or "go to sleep mode on" in query or "go to sleep on" in query:
+        sleep_mode()
 
     elif "tell me the weather of my location" in query:
         response = "Let me check the weather for you."
