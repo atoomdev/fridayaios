@@ -49,7 +49,7 @@ pip install openai speechrecognition pyttsx3 pillow requests spotipy discord-web
 
 ## ⚙️ Usage
 
-Run the script using Python:
+Run the script using Python. A simple Tkinter window will open showing an animated face, the last recognized command and the assistant's response. Use the **Start** and **Stop** buttons to control listening.
 
 ```bash
 python friday.py
