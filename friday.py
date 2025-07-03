@@ -13,7 +13,6 @@ import json
 import openai
 import datetime
 
-
 os.system("echo off")
 os.system("color a")
 os.system("cls")
