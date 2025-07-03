@@ -61,7 +61,6 @@ light = """
 print(light)
 
 
-load_dotenv()
 openai.api_key = 'sk-proj-EE0umSWxMEOFEu9ooOGnT3BlbkFJs4WUmcMl9ugRcfL0m7i3'
 
 # Konuşma motoru başlatma
