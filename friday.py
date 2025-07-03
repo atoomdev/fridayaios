@@ -5,6 +5,8 @@ from tkinter import PhotoImage
 from io import BytesIO
 from sys import exit
 import tkinter as tk
+import threading
+from gui import FridayGUI
 import speech_recognition as sr
 import pyttsx3
 import webbrowser
@@ -499,8 +501,8 @@ def process_query(query):
 
 
 
-def run_program():
-    """Main loop for the assistant."""
+def run_program(gui: FridayGUI):
+    """Main loop for the assistant. Uses GUI start/stop state."""
 
     mic = sr.Microphone()
     recognizer = sr.Recognizer()
@@ -508,6 +510,9 @@ def run_program():
         recognizer.adjust_for_ambient_noise(source)
 
     while True:
+        if not gui.running:
+            time.sleep(0.1)
+            continue
         # Program starts by listening for the activation keyword
         listen_for_keyword(recognizer, mic)
         if voice_mode:
@@ -515,9 +520,14 @@ def run_program():
         else:
             command = input("Send Command to Friday: ")  # Komutu yazılı olarak al
         if command:
+            gui.update_text(command)
             response = process_query(command)  # Komutu işle
+            gui.update_response(response)
             if response and voice_mode:
                 speak(response)  # Yanıtı sesli olarak ver
 
 if __name__ == "__main__":
-    run_program()
+    gui = FridayGUI()
+    assistant_thread = threading.Thread(target=run_program, args=(gui,), daemon=True)
+    assistant_thread.start()
+    gui.mainloop()
