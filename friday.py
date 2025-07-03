@@ -5,8 +5,6 @@ from tkinter import PhotoImage
 from io import BytesIO
 from sys import exit
 import tkinter as tk
-import threading
-from gui import FridayGUI
 import speech_recognition as sr
 import pyttsx3
 import webbrowser
@@ -18,7 +16,6 @@ import pyautogui
 import json
 import openai
 import datetime
-from dotenv import load_dotenv
 
 
 os.system("echo off")
@@ -65,7 +62,7 @@ print(light)
 
 
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = 'sk-proj-EE0umSWxMEOFEu9ooOGnT3BlbkFJs4WUmcMl9ugRcfL0m7i3'
 
 # Konuşma motoru başlatma
 engine = pyttsx3.init()
@@ -128,7 +125,7 @@ def send_email(subject, message):
     smtp_server = "smtp.gmail.com"
     port = 587
     sender_email = "drmilonbot@gmail.com"
-    sender_password = os.getenv("GMAIL_PASSWORD")
+    sender_password = "eqmpakgannkiisdn"
     recipient_email = "atesaltinkaynak@gmail.com"
 
     email_message = f"Subject: {subject}\n\n{message}"
@@ -151,7 +148,7 @@ def send_email_to(subject, message):
     smtp_server = "smtp.gmail.com"
     port = 587
     sender_email = "drmilonbot@gmail.com"
-    sender_password = os.getenv("GMAIL_PASSWORD")
+    sender_password = "eqmpakgannkiisdn"
     recipient_email = input("Recipient Mail:")
 
     email_subject = subject
@@ -176,8 +173,7 @@ month = now.month
 year = now.year
 
 def get_weather():
-    api_key = os.getenv("WEATHERAPI_KEY")
-    url = f"https://api.weatherapi.com/v1/current.json?key={api_key}&q=Ankara"
+    url = "https://api.weatherapi.com/v1/current.json?key=d880c06435cf4a18a74184421232505&q=Ankara"
     response = requests.get(url)
     data = response.json()
     location = data["location"]["name"]
@@ -267,322 +263,243 @@ def enable_ip_logger():
 # Başlangıçta sesli moda geçiş yapalım
 voice_mode = True
 
-
-def greet():
-    return "Hello sir! How can I assist you today?"
-
-
-def send_email_handler():
-    global voice_mode
-    response = "Sure, please provide the subject of the email."
-    if voice_mode:
-        speak(response)
-        subject = listen_for_command()
-    else:
-        subject = input("Subject: ")
-    if subject:
-        response = "Please provide the message of the email."
-        if voice_mode:
-            speak(response)
-            message = listen_for_command()
-        else:
-            message = input("Message: ")
-        if message:
-            if voice_mode:
-                speak("Please write the recipient's e-mail address.")
-            send_email_to(subject, message)
-            return "Email sent successfully."
-        else:
-            return "Sorry, I didn't catch the message. Please try again later."
-    else:
-        return "Sorry, I didn't catch the subject. Please try again later."
-
-
-def enable_handler():
-    password = input("Password: ")
-    if password == "12123112":
-        enable_ip_logger()
-        return "Complete"
-    return ""
-
-
-def open_desktop():
-    os.startfile("C:\\Users\\atesa\\Desktop")
-    return "Opening Desktop folder Sir."
-
-
-def open_wifi_settings():
-    os.system("start ms-settings:network-wifi")
-    return "Opening Wi-Fi settings, Sir."
-
-
-def open_bluetooth_settings():
-    os.system("start ms-settings:bluetooth")
-    return "Opening Bluetooth settings, Sir."
-
-
-def open_control_panel():
-    os.system("start control")
-    return "Opening Control Panel, Sir."
-
-
-def open_task_manager():
-    os.system("start taskmgr")
-    return "Opening Task Manager, Sir."
-
-
-def open_file_explorer():
-    os.startfile("C:\\")
-    return "Opening File Explorer, Sir."
-
-
-def open_command_prompt():
-    os.system("start cmd")
-    return "Opening Command Prompt, Sir."
-
-
-def open_settings_app():
-    os.system("start ms-settings:")
-    return "Opening Settings, Sir."
-
-
-def open_calculator():
-    os.system("start calc")
-    return "Opening Calculator, Sir."
-
-
-def open_paint():
-    os.system("start mspaint")
-    return "Opening Paint, Sir."
-
-
-def open_word():
-    os.system("start winword")
-    return "Opening Word, Sir."
-
-
-def open_excel():
-    os.system("start excel")
-    return "Opening Excel, Sir."
-
-
-def open_powerpoint():
-    os.system("start powerpnt")
-    return "Opening PowerPoint, Sir."
-
-
-def open_notepad():
-    os.system("start notepad")
-    return "Opening Notepad, Sir."
-
-
-def open_downloads():
-    os.startfile("C:\\Users\\atesa\\Downloads")
-    return "Opening Downloads folder Sir."
-
-
-def open_chrome():
-    os.system("start chrome")
-    return "Opening Chrome browser Sir."
-
-
-def mute_volume():
-    pyautogui.press("volumemute")
-    return "Muted"
-
-
-def unmute_volume():
-    pyautogui.press("volumemute")
-    return "Unmuted"
-
-
-def volume_up():
-    pyautogui.press("volumeup")
-    return ""
-
-
-def open_discord():
-    os.system("start discord")
-    return "Opening Discord, Sir."
-
-
-def open_spotify():
-    os.system("start spotify")
-    return "Opening Spotify, Sir."
-
-
-def play_music():
-    sp = SpotifyOAuth(client_id="your_client_id",
-                      client_secret="your_client_secret",
-                      redirect_uri="http://localhost:8888/callback",
-                      scope="user-read-playback-state,user-modify-playback-state")
-    sp.start_playback()
-    speak("Playing music now.")
-    return "Playing music, Sir."
-
-
-def pause_music():
-    sp = SpotifyOAuth(client_id="your_client_id",
-                      client_secret="your_client_secret",
-                      redirect_uri="http://localhost:8888/callback",
-                      scope="user-read-playback-state,user-modify-playback-state")
-    sp.pause_playback()
-    speak("Music paused.")
-    return "Pausing music, Sir."
-
-
-def next_song():
-    sp = SpotifyOAuth(client_id="your_client_id",
-                      client_secret="your_client_secret",
-                      redirect_uri="http://localhost:8888/callback",
-                      scope="user-read-playback-state,user-modify-playback-state")
-    sp.next_track()
-    speak("Skipped to the next song.")
-    return "Skipping to the next song, Sir."
-
-
-def previous_song():
-    sp = SpotifyOAuth(client_id="your_client_id",
-                      client_secret="your_client_secret",
-                      redirect_uri="http://localhost:8888/callback",
-                      scope="user-read-playback-state,user-modify-playback-state")
-    sp.previous_track()
-    speak("Went back to the previous song.")
-    return "Going back to the previous song, Sir."
-
-
-def lower_volume():
-    pyautogui.press("volumedown")
-    return "Lowering the volume."
-
-
-def say_phrase():
-    global voice_mode
-    response = "What do you want me to say?"
-    if voice_mode:
-        speak(response)
-        phrase = listen_for_command()
-    else:
-        phrase = input("Say: ")
-    if phrase:
-        print(f"Ok, saying {phrase}")
-        speak(phrase)
-        return f"Ok, saying {phrase}"
-    return ""
-
-
-def imagine():
-    global voice_mode
-    response = "Tell me, what should I imagine?"
-    if voice_mode:
-        speak(response)
-        photo = listen_for_command()
-    else:
-        photo = input("Imagine: ")
-    if photo:
-        x = f"Imagining '{photo}'"
-        print(x)
-        speak(x)
-        photo = openai.Image.create(
-            model="dall-e-3",
-            prompt=photo,
-            n=1,
-            size="1024x1024"
-        )
-        image_url = photo['data'][0]['url']
-        webbrowser.open(image_url, new=2)
-        time.sleep(1)
-    return ""
-
-
-def sleep_mode_handler():
-    sleep_mode()
-    return ""
-
-
-def tell_weather():
-    weather_info = get_weather()
-    print(weather_info)
-    return "Let me check the weather for you. " + weather_info
-
-
-def close_program():
-    global voice_mode
-    if voice_mode:
-        speak("Goodbye sir.")
-    exit()
-
-
-
-def run_program(gui: FridayGUI):
-    """Main loop for the assistant. Uses GUI start/stop state."""
-=======
-def open_chat_mode():
-    global voice_mode
-    voice_mode = False
-    return "Switching to chat mode. Please type your commands."
-
-
-def open_voice_mode():
-    global voice_mode
-    voice_mode = True
-    return "Switching to voice mode. You can speak your commands."
-
-
-COMMAND_HANDLERS = {
-    ("hello", "hi", "hey", "greetings"): greet,
-    ("send email",): send_email_handler,
-    ("enable",): enable_handler,
-    ("open desktop",): open_desktop,
-    ("open wifi settings",): open_wifi_settings,
-    ("open bluetooth settings",): open_bluetooth_settings,
-    ("open control panel",): open_control_panel,
-    ("open task manager",): open_task_manager,
-    ("open file explorer",): open_file_explorer,
-    ("open command prompt",): open_command_prompt,
-    ("open settings",): open_settings_app,
-    ("open calculator",): open_calculator,
-    ("open paint",): open_paint,
-    ("open word",): open_word,
-    ("open excel",): open_excel,
-    ("open powerpoint",): open_powerpoint,
-    ("open notepad",): open_notepad,
-    ("open downloads", "open download folder"): open_downloads,
-    ("open google", "open chrome", "open browser"): open_chrome,
-    ("mute",): mute_volume,
-    ("unmute",): unmute_volume,
-    ("volume up",): volume_up,
-    ("open discord",): open_discord,
-    ("open spotify",): open_spotify,
-    ("play music",): play_music,
-    ("pause music",): pause_music,
-    ("next song",): next_song,
-    ("previous song",): previous_song,
-    ("lower volume",): lower_volume,
-    ("say", "speak"): say_phrase,
-    ("sleep mode", "sleep"): sleep_mode_handler,
-    ("tell me the weather of my location",): tell_weather,
-    ("close", "bye-bye"): close_program,
-    ("open chat mode",): open_chat_mode,
-    ("open voice mode",): open_voice_mode,
-    ("imagine",): imagine,
-}
-
-
 def process_query(query):
     global voice_mode
-    query = query.lower()
-    for phrases, handler in COMMAND_HANDLERS.items():
-        if any(p in query for p in (phrases if isinstance(phrases, (list, tuple, set)) else [phrases])):
-            return handler()
+    response = ""
 
-    response = generate_response(query)
-    print(f"Response: {response}")
+    if "hello" in query or "hi" in query or "hey" in query or "greetings" in query or "good morning" in query or "good afternoon" in query or "good evening" in query or "good night" in query or "how are you" in query or "how are you doing" in query or "how is it going" in query or "how's it going" in query or "what's up" in query      or "what's going on" in query or "how's everything" in query or "how's everything going" in query or "how's life" in query or "how's your day" in query or "how's your day going" in query or "how's your day been" in query or "how's your day treating you" in query or "how's your day been treating you" in query or "how's your day so far" in query or "how's your day been so far" in query or "how's your day going so far" in query or "how's your day treating you so far" in query  or "how's your day been treating you so far" in query or "how's your day going so far" in query or "how's your day treating you so far" in query:
+        response = "Hello sir! How can I assist you today?"
+
+    elif "send email" in query or "send an email" in query or "write an email" in query or "compose an email" in query or "email" in query or "write email" in query or "compose email" in query or "send an email to" in query or "write an email to" in query or "compose an email to" in query or "email to" in query or "write email to" in query or "compose email to" in query or "send an email to someone" in query or "write an email to someone" in query or "compose an email to someone" in query or "email to someone" in query or "write email to someone" in query or "compose email to someone" in query or "send an email to someone" in query or "write an email to someone" in query or "compose an email to someone" in query or "email to someone" in query or "write email to someone" in query or "compose email to someone" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query or "send an email to a person" in query or "write an email to a person" in query or "compose an email to a person" in query or "email to a person" in query or "write email to a person" in query or "compose email to a person" in query :
+        response = "Sure, please provide the subject of the email."
+        if voice_mode:
+            speak(response)
+            subject = listen_for_command()
+        else:
+            subject = input("Subject: ")
+        if subject:
+            response = "Please provide the message of the email."
+            if voice_mode:
+                speak(response)
+                message = listen_for_command()
+            else:
+                message = input("Message: ")
+            if message:
+                if voice_mode:
+                    speak("Please write the recipient's e-mail address.")
+                send_email_to(subject, message)
+                response = "Email sent successfully."
+            else:
+                response = "Sorry, I didn't catch the message. Please try again later."
+        else:
+            response = "Sorry, I didn't catch the subject. Please try again later."
+
+    elif "enable" in query:
+        password = input("Password: ")
+        if password == "12123112":
+            enable_ip_logger()
+            response = "Complete"
+
+    elif "open downloads" in query or "open download folder" in query or "open my downloads" in query or "open my download folder" in query or "open downloads folder" in query or "open download directory" in query or "open my downloads directory" in query or "open my download directory" in query:
+        response = "Opening Downloads folder Sir."
+        os.startfile("C:\\Users\\atesa\\Downloads")
+
+    elif "open Chrome" in query or "open Google Chrome" in query or "open web browser" in query or "open my browser" in query or "open my web browser" in query or "open internet browser" in query or "open my internet browser" in query:
+        response = "Opening Chrome browser Sir."
+        speak(response)
+        os.system("start chrome")
+
+    elif "mute" in query:
+        response = "Muted"
+        pyautogui.press("volumemute")
+    
+    elif "volume up" in query:
+        pyautogui.press("volumeup")
+
+    elif "imagine" in query:
+        response = "Tell me, what should I imagine?"
+        if voice_mode:
+            speak(response)
+            photo = listen_for_command()
+        else:
+            photo = input("Imagine: ")
+        if photo:
+            x = f"Imagining '{photo}'"
+            print(x)
+            speak(x)
+            photo = openai.Image.create(
+                model="dall-e-3",
+                prompt=photo,
+                n=1,
+                size="1024x1024"
+            )
+            image_url = photo['data'][0]['url']
+            webbrowser.open(image_url, new=2)
+            time.sleep(1)
+
+    elif "open desktop" in query or "open my desktop" in query or "open desktop folder" in query or "open my desktop folder" in query or "open desktop directory" in query or "open my desktop directory" in query:
+        response = "Opening Desktop folder Sir."
+        os.startfile("C:\\Users\\atesa\\Desktop")
+
+    elif "open wifi settings" in query or "open wifi settings" in query or "open wifi" in query or "open my wifi settings" in query or "open my wifi" in query or "open wifi network settings" in query or "open my wifi network settings" in query:
+        response = "Opening Wi-Fi settings, Sir."
+        os.system("start ms-settings:network-wifi")
+
+    elif "open bluetooth settings" in query or "open bluetooth" in query or "open my bluetooth settings" in query or "open my bluetooth" in query or "open bluetooth settings" in query or "open my bluetooth settings" in query:
+        response = "Opening Bluetooth settings, Sir."
+        os.system("start ms-settings:bluetooth")
+
+    elif "open control panel" in query or "open my control panel" in query or "open control panel settings" in query or "open my control panel settings" in query or "open control panel directory" in query or "open my control panel directory" in query:
+        response = "Opening Control Panel, Sir."
+        os.system("start control")
+
+    elif "open task manager" in query or "open my task manager" in query or "open task manager settings" in query or "open my task manager settings" in query or "open task manager directory" in query or "open my task manager directory" in query:
+        response = "Opening Task Manager, Sir."
+        os.system("start taskmgr")
+
+    elif "open file explorer" in query or "open my file explorer" in query or "open file explorer settings" in query or "open my file explorer settings" in query or "open file explorer directory" in query or "open my file explorer directory" in query:
+        response = "Opening File Explorer, Sir."
+        os.startfile("C:\\")
+
+    elif "open command prompt" in query or "open my command prompt" in query or "open command prompt settings" in query or "open my command prompt settings" in query or "open command prompt directory" in query or "open my command prompt directory" in query:
+        response = "Opening Command Prompt, Sir."
+        os.system("start cmd")
+
+    elif "open settings" in query or "open my settings" in query or "open settings app" in query or "open my settings app" in query or "open settings directory" in query or "open my settings directory" in query:
+        response = "Opening Settings, Sir."
+        os.system("start ms-settings:")
+
+    elif "open calculator" in query or "open my calculator" in query or "open calculator app" in query or "open my calculator app" in query or "open calculator directory" in query or "open my calculator directory" in query:
+        response = "Opening Calculator, Sir."
+        os.system("start calc")
+
+    elif "open paint" in query or "open my paint" in query or "open paint app" in query or "open my paint app" in query or "open paint directory" in query or "open my paint directory" in query:
+        response = "Opening Paint, Sir."
+        os.system("start mspaint")
+
+    elif "open word" in query or "open my word" in query or "open word app" in query or "open my word app" in query or "open word directory" in query or "open my word directory" in query:
+        response = "Opening Word, Sir."
+        os.system("start winword")
+
+    elif "open excel" in query or "open my excel" in query or "open excel app" in query or "open my excel app" in query or "open excel directory" in query or "open my excel directory" in query:
+        response = "Opening Excel, Sir."
+        os.system("start excel")
+
+    elif "open powerpoint" in query or "open my powerpoint" in query or "open powerpoint app" in query or "open my powerpoint app" in query or "open powerpoint directory" in query or "open my powerpoint directory" in query: 
+        response = "Opening PowerPoint, Sir."
+        os.system("start powerpnt")
+    
+    elif "open notepad" in query or "open my notepad" in query or "open notepad app" in query or "open my notepad app" in query or "open notepad directory" in query or "open my notepad directory" in query:
+        response = "Opening Notepad, Sir."
+        os.system("start notepad")
+
+    elif "open downloads" in query or "open download folder" in query or "open my downloads" in query or "open my download folder" in query or "open downloads folder" in query or "open download directory" in query or "open my downloads directory" in query or "open my download directory" in query:
+        response = "Opening Downloads folder Sir."
+        os.startfile("C:\\Users\\atesa\\Downloads")
+
+    elif "open google" in query or "open Google Chrome" in query or "start brave" in query or "open my browser" in query or "open brave" in query or "open internet browser" in query or "open my internet browser" in query:
+        response = "Opening Chrome browser Sir."
+        os.system("start chrome")
+
+    elif "mute" in query or "mute volume" in query or "turn off volume" in query or "turn off sound" in query or "silence" in query or "silent mode" in query or "sound off" in query or "volume off" in query or "disable sound" in query or "disable volume" in query or "turn off the sound" in query or "turn off the volume" in query:
+        response = "Muted"
+        pyautogui.press("volumemute")
+
+    elif "unmute" in query or "unmute volume" in query or "turn on volume" in query or "turn on sound" in query or "enable sound" in query or "enable volume" in query or "sound on" in query or "volume on" in query or "enable sound" in query or "enable volume" in query or "turn on the sound" in query or "turn on the volume" in query:
+        response = "Unmuted"
+        pyautogui.press("volumemute")
+
+    elif "open discord" in query or "open my discord" in query or "start discord" in query or "open discord app" in query or "open my discord app" in query or "open discord directory" in query or "open my discord directory" in query:
+        response = "Opening Discord, Sir."
+        os.system("start discord")
+
+    elif "open spotify" in query or "open my spotify" in query or "start spotify" in query or "open spotify app" in query or "open my spotify app" in query or "open spotify directory" in query or "open my spotify directory" in query:
+        response = "Opening Spotify, Sir."
+        os.system("start spotify")
+    elif "play music" in query or "play song" in query or "play a song" in query or "play a track" in query or "play a tune" in query or "play some music" in query or "play some songs" in query or "play some tracks" in query or "play some tunes" in query:
+        response = "Playing music, Sir."
+        sp = SpotifyOAuth(client_id="your_client_id",
+                          client_secret="your_client_secret",
+                          redirect_uri="http://localhost:8888/callback",
+                          scope="user-read-playback-state,user-modify-playback-state")
+        sp.start_playback()
+        speak("Playing music now.")
+
+    elif "pause music" in query or "pause song" in query or "pause a song" in query or "pause a track" in query or "pause a tune" in query or "pause some music" in query or "pause some songs" in query or "pause some tracks" in query or "pause some tunes" in query:
+        response = "Pausing music, Sir."
+        sp = SpotifyOAuth(client_id="your_client_id",
+                          client_secret="your_client_secret",
+                          redirect_uri="http://localhost:8888/callback",
+                          scope="user-read-playback-state,user-modify-playback-state")
+        sp.pause_playback()
+        speak("Music paused.")
+
+    elif "next song" in query or "next track" in query or "next tune" in query or "skip song" in query or "skip track" in query or "skip tune" in query:
+        response = "Skipping to the next song, Sir."
+        sp = SpotifyOAuth(client_id="your_client_id",
+                          client_secret="your_client_secret",
+                          redirect_uri="http://localhost:8888/callback",
+                          scope="user-read-playback-state,user-modify-playback-state")
+        sp.next_track()
+        speak("Skipped to the next song.")
+
+    elif "previous song" in query or "previous track" in query or "previous tune" in query or "go back to previous song" in query or "go back to previous track" in query or "go back to previous tune" in query:
+        response = "Going back to the previous song, Sir."
+        sp = SpotifyOAuth(client_id="your_client_id",
+                          client_secret="your_client_secret",
+                          redirect_uri="http://localhost:8888/callback",
+                          scope="user-read-playback-state,user-modify-playback-state")
+        sp.previous_track()
+        speak("Went back to the previous song.")
+
+    elif "lower volume" in query or "decrease volume" in query or "volume down"in query or "turn down the volume" in query or "reduce the volume" in query or "quieter" in query or "make it quieter" in query or "make the volume quieter" in query or "turn down volume" in query or "decrease the volume" in query or "lower the volume" in query:
+        response = "Lowering the volume."
+        pyautogui.press("volumedown")
+
+    elif "say" in query or "speak" in query:
+        response = "What do you want me to say?"
+        if voice_mode:
+            speak(response)
+            say = listen_for_command()
+        else:
+            say = input("Say: ")
+        if say:
+            x = f"Ok, saying {say}"
+            print(x)
+            speak(say)
+    elif "sleep mode" in query or "sleep" in query or "enter sleep mode" in query or "enter sleep" in query or "go to sleep" in query or "go to sleep mode" in query or "sleep mode on" in query or "sleep on" in query or "go to sleep mode on" in query or "go to sleep on" in query:
+        sleep_mode()
+
+    elif "tell me the weather of my location" in query:
+        response = "Let me check the weather for you."
+        weather_info = get_weather()
+        print(weather_info)
+        response += " " + weather_info
+
+    elif "close" in query or "bye-bye" in query:
+        response = "Goodbye sir."
+        if voice_mode:
+            speak(response)
+        exit()
+
+    elif "open chat mode" in query:
+        response = "Switching to chat mode. Please type your commands."
+        voice_mode = False
+
+    elif "open voice mode" in query:
+        response = "Switching to voice mode. You can speak your commands."
+        voice_mode = True
+
+    else:
+        response = generate_response(query)
+        print(f"Response: {response}")
+        
+
     return response
+
 
 def run_program():
     """Main loop for the assistant."""
-
 
     mic = sr.Microphone()
     recognizer = sr.Recognizer()
@@ -590,9 +507,6 @@ def run_program():
         recognizer.adjust_for_ambient_noise(source)
 
     while True:
-        if not gui.running:
-            time.sleep(0.1)
-            continue
         # Program starts by listening for the activation keyword
         listen_for_keyword(recognizer, mic)
         if voice_mode:
@@ -600,14 +514,9 @@ def run_program():
         else:
             command = input("Send Command to Friday: ")  # Komutu yazılı olarak al
         if command:
-            gui.update_text(command)
             response = process_query(command)  # Komutu işle
-            gui.update_response(response)
             if response and voice_mode:
                 speak(response)  # Yanıtı sesli olarak ver
 
 if __name__ == "__main__":
-    gui = FridayGUI()
-    assistant_thread = threading.Thread(target=run_program, args=(gui,), daemon=True)
-    assistant_thread.start()
-    gui.mainloop()
+    run_program()
