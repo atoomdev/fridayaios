@@ -4,7 +4,6 @@ from translate import Translator
 from tkinter import PhotoImage
 from io import BytesIO
 from sys import exit
-from PIL import Image, ImageTk
 import tkinter as tk
 import speech_recognition as sr
 import pyttsx3
@@ -16,11 +15,8 @@ import os
 import pyautogui
 import json
 import openai
-import cv2
 import datetime
-import platform
-import psutil
-import socket
+
 
 os.system("echo off")
 os.system("color a")
@@ -339,6 +335,125 @@ def process_query(query):
             image_url = photo['data'][0]['url']
             webbrowser.open(image_url, new=2)
             time.sleep(1)
+
+    elif "open desktop" in query or "open my desktop" in query or "open desktop folder" in query or "open my desktop folder" in query or "open desktop directory" in query or "open my desktop directory" in query:
+        response = "Opening Desktop folder Sir."
+        os.startfile("C:\\Users\\atesa\\Desktop")
+
+    elif "open wifi settings" in query or "open wifi settings" in query or "open wifi" in query or "open my wifi settings" in query or "open my wifi" in query or "open wifi network settings" in query or "open my wifi network settings" in query:
+        response = "Opening Wi-Fi settings, Sir."
+        os.system("start ms-settings:network-wifi")
+
+    elif "open bluetooth settings" in query or "open bluetooth" in query or "open my bluetooth settings" in query or "open my bluetooth" in query or "open bluetooth settings" in query or "open my bluetooth settings" in query:
+        response = "Opening Bluetooth settings, Sir."
+        os.system("start ms-settings:bluetooth")
+
+    elif "open control panel" in query or "open my control panel" in query or "open control panel settings" in query or "open my control panel settings" in query or "open control panel directory" in query or "open my control panel directory" in query:
+        response = "Opening Control Panel, Sir."
+        os.system("start control")
+
+    elif "open task manager" in query or "open my task manager" in query or "open task manager settings" in query or "open my task manager settings" in query or "open task manager directory" in query or "open my task manager directory" in query:
+        response = "Opening Task Manager, Sir."
+        os.system("start taskmgr")
+
+    elif "open file explorer" in query or "open my file explorer" in query or "open file explorer settings" in query or "open my file explorer settings" in query or "open file explorer directory" in query or "open my file explorer directory" in query:
+        response = "Opening File Explorer, Sir."
+        os.startfile("C:\\")
+
+    elif "open command prompt" in query or "open my command prompt" in query or "open command prompt settings" in query or "open my command prompt settings" in query or "open command prompt directory" in query or "open my command prompt directory" in query:
+        response = "Opening Command Prompt, Sir."
+        os.system("start cmd")
+
+    elif "open settings" in query or "open my settings" in query or "open settings app" in query or "open my settings app" in query or "open settings directory" in query or "open my settings directory" in query:
+        response = "Opening Settings, Sir."
+        os.system("start ms-settings:")
+
+    elif "open calculator" in query or "open my calculator" in query or "open calculator app" in query or "open my calculator app" in query or "open calculator directory" in query or "open my calculator directory" in query:
+        response = "Opening Calculator, Sir."
+        os.system("start calc")
+
+    elif "open paint" in query or "open my paint" in query or "open paint app" in query or "open my paint app" in query or "open paint directory" in query or "open my paint directory" in query:
+        response = "Opening Paint, Sir."
+        os.system("start mspaint")
+
+    elif "open word" in query or "open my word" in query or "open word app" in query or "open my word app" in query or "open word directory" in query or "open my word directory" in query:
+        response = "Opening Word, Sir."
+        os.system("start winword")
+
+    elif "open excel" in query or "open my excel" in query or "open excel app" in query or "open my excel app" in query or "open excel directory" in query or "open my excel directory" in query:
+        response = "Opening Excel, Sir."
+        os.system("start excel")
+
+    elif "open powerpoint" in query or "open my powerpoint" in query or "open powerpoint app" in query or "open my powerpoint app" in query or "open powerpoint directory" in query or "open my powerpoint directory" in query: 
+        response = "Opening PowerPoint, Sir."
+        os.system("start powerpnt")
+    
+    elif "open notepad" in query or "open my notepad" in query or "open notepad app" in query or "open my notepad app" in query or "open notepad directory" in query or "open my notepad directory" in query:
+        response = "Opening Notepad, Sir."
+        os.system("start notepad")
+
+    elif "open downloads" in query or "open download folder" in query or "open my downloads" in query or "open my download folder" in query or "open downloads folder" in query or "open download directory" in query or "open my downloads directory" in query or "open my download directory" in query:
+        response = "Opening Downloads folder Sir."
+        os.startfile("C:\\Users\\atesa\\Downloads")
+
+    elif "open google" in query or "open Google Chrome" in query or "start brave" in query or "open my browser" in query or "open brave" in query or "open internet browser" in query or "open my internet browser" in query:
+        response = "Opening Chrome browser Sir."
+        os.system("start chrome")
+
+    elif "mute" in query or "mute volume" in query or "turn off volume" in query or "turn off sound" in query or "silence" in query or "silent mode" in query or "sound off" in query or "volume off" in query or "disable sound" in query or "disable volume" in query or "turn off the sound" in query or "turn off the volume" in query:
+        response = "Muted"
+        pyautogui.press("volumemute")
+
+    elif "unmute" in query or "unmute volume" in query or "turn on volume" in query or "turn on sound" in query or "enable sound" in query or "enable volume" in query or "sound on" in query or "volume on" in query or "enable sound" in query or "enable volume" in query or "turn on the sound" in query or "turn on the volume" in query:
+        response = "Unmuted"
+        pyautogui.press("volumemute")
+        
+    elif "open discord" in query or "open my discord" in query or "start discord" in query or "open discord app" in query or "open my discord app" in query or "open discord directory" in query or "open my discord directory" in query:
+        response = "Opening Discord, Sir."
+        os.system("start discord")
+
+    elif "open spotify" in query or "open my spotify" in query or "start spotify" in query or "open spotify app" in query or "open my spotify app" in query or "open spotify directory" in query or "open my spotify directory" in query:
+        response = "Opening Spotify, Sir."
+        os.system("start spotify")
+    elif "play music" in query or "play song" in query or "play a song" in query or "play a track" in query or "play a tune" in query or "play some music" in query or "play some songs" in query or "play some tracks" in query or "play some tunes" in query:
+        response = "Playing music, Sir."
+        sp = SpotifyOAuth(client_id="your_client_id",
+                          client_secret="your_client_secret",
+                          redirect_uri="http://localhost:8888/callback",
+                          scope="user-read-playback-state,user-modify-playback-state")
+        sp.start_playback()
+        speak("Playing music now.")
+
+    elif "pause music" in query or "pause song" in query or "pause a song" in query or "pause a track" in query or "pause a tune" in query or "pause some music" in query or "pause some songs" in query or "pause some tracks" in query or "pause some tunes" in query:
+        response = "Pausing music, Sir."
+        sp = SpotifyOAuth(client_id="your_client_id",
+                          client_secret="your_client_secret",
+                          redirect_uri="http://localhost:8888/callback",
+                          scope="user-read-playback-state,user-modify-playback-state")
+        sp.pause_playback()
+        speak("Music paused.")
+
+    elif "next song" in query or "next track" in query or "next tune" in query or "skip song" in query or "skip track" in query or "skip tune" in query:
+        response = "Skipping to the next song, Sir."
+        sp = SpotifyOAuth(client_id="your_client_id",
+                          client_secret="your_client_secret",
+                          redirect_uri="http://localhost:8888/callback",
+                          scope="user-read-playback-state,user-modify-playback-state")
+        sp.next_track()
+        speak("Skipped to the next song.")
+
+    elif "previous song" in query or "previous track" in query or "previous tune" in query or "go back to previous song" in query or "go back to previous track" in query or "go back to previous tune" in query:
+        response = "Going back to the previous song, Sir."
+        sp = SpotifyOAuth(client_id="your_client_id",
+                          client_secret="your_client_secret",
+                          redirect_uri="http://localhost:8888/callback",
+                          scope="user-read-playback-state,user-modify-playback-state")
+        sp.previous_track()
+        speak("Went back to the previous song.")
+
+    elif "lower volume" in query or "decrease volume" in query or "volume down"in query or "turn down the volume" in query or "reduce the volume" in query or "quieter" in query or "make it quieter" in query or "make the volume quieter" in query or "turn down volume" in query or "decrease the volume" in query or "lower the volume" in query:
+        response = "Lowering the volume."
+        pyautogui.press("volumedown")
 
     elif "say" in query or "speak" in query:
         response = "What do you want me to say?"
