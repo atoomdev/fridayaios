@@ -80,21 +80,26 @@ def speak(text):
     engine.say(text)
     engine.runAndWait()
 
-def listen_for_keyword(keyword="friday"):
+def listen_for_keyword(recognizer, mic, keyword="friday"):
+    """Continuously listen for the given keyword using the provided recognizer
+    and microphone instances."""
     time.sleep(0.4)
-    recognizer = sr.Recognizer()
-    mic = sr.Microphone()
     print("Listening for keyword...")  # Sadece başlangıçta mesajı yazdır
     while True:
         with mic as source:
-            audio = recognizer.listen(source)
+            try:
+                audio = recognizer.listen(source, timeout=5, phrase_time_limit=3)
+            except sr.WaitTimeoutError:
+                # No speech detected within the timeout, continue listening
+                continue
         try:
             text = recognizer.recognize_google(audio)
             if keyword.lower() in text.lower():
-                print(f"Yes sir?")
-                speak(f"Yes sir?")
+                print("Yes sir?")
+                speak("Yes sir?")
                 return
         except sr.UnknownValueError:
+            # Speech was unintelligible, ignore and continue listening
             pass
         except sr.RequestError as e:
             print(f"Could not request results; {e}")
@@ -380,23 +385,24 @@ def process_query(query):
 
 
 def run_program():
+    """Main loop for the assistant."""
 
     mic = sr.Microphone()
     recognizer = sr.Recognizer()
     with mic as source:
         recognizer.adjust_for_ambient_noise(source)
-        
+
     while True:
-        listen_for_keyword()  # Program başlatıldığında keyword'u dinle
+        # Program starts by listening for the activation keyword
+        listen_for_keyword(recognizer, mic)
         if voice_mode:
             command = listen_for_command()  # Komutu sesli olarak dinle
         else:
             command = input("Send Command to Friday: ")  # Komutu yazılı olarak al
         if command:
             response = process_query(command)  # Komutu işle
-            if response:
-                if voice_mode:
-                    speak(response)  # Yanıtı sesli olarak ver
+            if response and voice_mode:
+                speak(response)  # Yanıtı sesli olarak ver
 
 if __name__ == "__main__":
     run_program()
