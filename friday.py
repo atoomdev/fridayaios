@@ -16,6 +16,7 @@ import pyautogui
 import json
 import openai
 import datetime
+from dotenv import load_dotenv
 
 
 os.system("echo off")
@@ -61,7 +62,8 @@ light = """
 print(light)
 
 
-openai.api_key = 'sk-proj-EE0umSWxMEOFEu9ooOGnT3BlbkFJs4WUmcMl9ugRcfL0m7i3'
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Konuşma motoru başlatma
 engine = pyttsx3.init()
@@ -124,7 +126,7 @@ def send_email(subject, message):
     smtp_server = "smtp.gmail.com"
     port = 587
     sender_email = "drmilonbot@gmail.com"
-    sender_password = "eqmpakgannkiisdn"
+    sender_password = os.getenv("GMAIL_PASSWORD")
     recipient_email = "atesaltinkaynak@gmail.com"
 
     email_message = f"Subject: {subject}\n\n{message}"
@@ -147,7 +149,7 @@ def send_email_to(subject, message):
     smtp_server = "smtp.gmail.com"
     port = 587
     sender_email = "drmilonbot@gmail.com"
-    sender_password = "eqmpakgannkiisdn"
+    sender_password = os.getenv("GMAIL_PASSWORD")
     recipient_email = input("Recipient Mail:")
 
     email_subject = subject
@@ -172,7 +174,8 @@ month = now.month
 year = now.year
 
 def get_weather():
-    url = "https://api.weatherapi.com/v1/current.json?key=d880c06435cf4a18a74184421232505&q=Ankara"
+    api_key = os.getenv("WEATHERAPI_KEY")
+    url = f"https://api.weatherapi.com/v1/current.json?key={api_key}&q=Ankara"
     response = requests.get(url)
     data = response.json()
     location = data["location"]["name"]

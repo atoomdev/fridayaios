@@ -24,10 +24,20 @@
 Install required packages:
 
 ```bash
-pip install openai speechrecognition pyttsx3 pillow requests spotipy discord-webhook translate opencv-python psutil
+pip install openai speechrecognition pyttsx3 pillow requests spotipy discord-webhook translate opencv-python psutil python-dotenv
 ```
 
 > `tkinter`, `smtplib`, `sys`, and `os` are included in most standard Python installations.
+
+## 🔧 Setup
+
+Create a `.env` file in the project root and define the following variables:
+
+```bash
+OPENAI_API_KEY=your-openai-key
+GMAIL_PASSWORD=your-gmail-app-password
+WEATHERAPI_KEY=your-weatherapi-key
+```
 
 ---
 
