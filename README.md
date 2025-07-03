@@ -35,7 +35,7 @@ pip install openai speechrecognition pyttsx3 pillow requests spotipy discord-web
 
 | Library                                   | Purpose                        |
 | ----------------------------------------- | ------------------------------ |
-| `openai`                                  | GPT and DALL·E integration     |
+| `ollama`                                  | LLM and DALL·E integration     |
 | `speech_recognition`                      | Voice command recognition      |
 | `pyttsx3`                                 | Offline TTS engine             |
 | `tkinter` + `PIL`                         | GUI and image rendering        |
