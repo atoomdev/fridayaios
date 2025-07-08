@@ -16,12 +16,6 @@ import datetime
 import subprocess
 import trimesh
 
-# Used for advanced text-to-3d generation
-try:
-    import shap_e  # noqa: F401
-except ImportError:  # pragma: no cover - optional dependency
-    shap_e = None
-
 os.system("echo off")
 os.system("color a")
 os.system("cls")
@@ -263,54 +257,18 @@ def enable_ip_logger():
     show_results(ip, hostname, city, region, country, loc, isp, postal, timezone)
     print("\n")
 
-def generate_3d_model(description: str, output_path: str) -> None:
-    """Generate a 3D mesh from text using shap-e and save as OBJ."""
-    if shap_e is None:
-        raise ImportError(
-            "shap-e is required for text-to-3d generation. Install with `pip install shap-e`."
-        )
-
-    import torch
-    from shap_e.diffusion.sample import sample_latents
-    from shap_e.diffusion.gaussian_diffusion import diffusion
-    from shap_e.models.download import load_model
-    from shap_e.util.notebooks import decode_latent_mesh
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    text_model = load_model("text300M", device)
-    latents = sample_latents(
-        batch_size=1,
-        model=text_model,
-        diffusion=diffusion,
-        guidance_scale=15.0,
-        model_kwargs=dict(texts=[description]),
-        progress=False,
-        device=device,
-    )
-
-    mesh = decode_latent_mesh(latents[0]).tri_mesh()
+def generate_3d_model(description, output_path):
+    """Create a simple 3D model based on the description and save it."""
+    desc = description.lower()
+    if "sphere" in desc:
+        mesh = trimesh.creation.icosphere()
+    elif "cylinder" in desc:
+        mesh = trimesh.creation.cylinder(radius=1.0, height=2.0)
+    elif "cone" in desc:
+        mesh = trimesh.creation.cone(radius=1.0, height=2.0)
+    else:
+        mesh = trimesh.creation.box()
     mesh.export(output_path)
-
-
-def slice_to_gcode(obj_path: str, gcode_path: str) -> None:
-    """Slice an OBJ mesh into G-code using CuraEngine."""
-    cmd = [
-        "CuraEngine",
-        "slice",
-        "-l",
-        obj_path,
-        "-o",
-        gcode_path,
-        "-s",
-        "machine_nozzle_size=0.4",
-        "-s",
-        "layer_height=0.2",
-        "-s",
-        "infill_sparse_density=20",
-        "-s",
-        "support_enable=true",
-    ]
-    subprocess.run(cmd, check=True)
 
 
 # Başlangıçta sesli moda geçiş yapalım
@@ -399,12 +357,10 @@ def process_query(query):
             obj_desc = input("3D Object: ")
         if obj_desc:
             desktop = os.path.join(os.path.expanduser("~"), "Desktop")
-            obj_file = os.path.join(desktop, "friday_model.obj")
-            gcode_file = os.path.join(desktop, "friday_model.gcode")
-            generate_3d_model(obj_desc, obj_file)
-            slice_to_gcode(obj_file, gcode_file)
-            response = f"OBJ and G-code saved to {desktop}."
-            if sys.platform == "win32":
+            output_file = os.path.join(desktop, "friday_model.obj")
+            generate_3d_model(obj_desc, output_file)
+            response = f"3D model saved to {desktop}."
+            if os.name == "nt":
                 os.startfile(desktop)
             elif sys.platform == "darwin":
                 subprocess.call(["open", desktop])
