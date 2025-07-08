@@ -15,15 +15,6 @@ import openai
 import datetime
 import subprocess
 import trimesh
-try:
-    import torch
-    from shap_e.diffusion.sample import sample_latents
-    from shap_e.diffusion.gaussian_diffusion import diffusion_from_config
-    from shap_e.models.download import load_model, load_config
-    from shap_e.util.notebooks import decode_latent_mesh
-    SHAPE_AVAILABLE = True
-except Exception:
-    SHAPE_AVAILABLE = False
 
 os.system("echo off")
 os.system("color a")
@@ -267,7 +258,7 @@ def enable_ip_logger():
     print("\n")
 
 def generate_3d_model(description, output_path):
-    """Create a 3D model from text and save it as OBJ."""
+    """Create a simple 3D model based on the description and save it."""
     desc = description.lower()
     if "sphere" in desc:
         mesh = trimesh.creation.icosphere()
@@ -275,47 +266,9 @@ def generate_3d_model(description, output_path):
         mesh = trimesh.creation.cylinder(radius=1.0, height=2.0)
     elif "cone" in desc:
         mesh = trimesh.creation.cone(radius=1.0, height=2.0)
-    elif "cube" in desc or "box" in desc:
-        mesh = trimesh.creation.box()
     else:
-        if SHAPE_AVAILABLE:
-            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-            model = load_model('text300M', device)
-            diffusion = diffusion_from_config(load_config('text300M'))
-            latents = sample_latents(
-                batch_size=1,
-                model=model,
-                diffusion=diffusion,
-                guidance_scale=15.0,
-                model_kwargs=dict(texts=[description]),
-                progress=False,
-                device=device,
-            )
-            mesh = decode_latent_mesh(latents[0]).tri_mesh()
-        else:
-            print("shap-e library not available; creating box mesh.")
-            mesh = trimesh.creation.box()
+        mesh = trimesh.creation.box()
     mesh.export(output_path)
-
-def slice_to_gcode(obj_path, gcode_path):
-    """Slice OBJ into gcode using CuraEngine if available."""
-    cmd = [
-        "CuraEngine",
-        "slice",
-        "-v",
-        "-l", obj_path,
-        "-o", gcode_path,
-        "-s", "machine_nozzle_size=0.4",
-        "-s", "layer_height=0.2",
-        "-s", "infill_sparse_density=20",
-        "-s", "support_enable=true",
-    ]
-    try:
-        subprocess.run(cmd, check=True)
-    except FileNotFoundError:
-        print("CuraEngine not found. Skipping slicing.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error running CuraEngine: {e}")
 
 
 # Başlangıçta sesli moda geçiş yapalım
@@ -404,11 +357,9 @@ def process_query(query):
             obj_desc = input("3D Object: ")
         if obj_desc:
             desktop = os.path.join(os.path.expanduser("~"), "Desktop")
-            obj_file = os.path.join(desktop, "friday_model.obj")
-            gcode_file = os.path.join(desktop, "friday_model.gcode")
-            generate_3d_model(obj_desc, obj_file)
-            slice_to_gcode(obj_file, gcode_file)
-            response = f"G-code saved to {gcode_file}."
+            output_file = os.path.join(desktop, "friday_model.obj")
+            generate_3d_model(obj_desc, output_file)
+            response = f"3D model saved to {desktop}."
             if os.name == "nt":
                 os.startfile(desktop)
             elif sys.platform == "darwin":
