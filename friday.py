@@ -1,5 +1,6 @@
 from spotipy.oauth2 import SpotifyOAuth
 from sys import exit
+import sys
 import tkinter as tk
 import speech_recognition as sr
 import pyttsx3
@@ -12,6 +13,8 @@ import pyautogui
 import json
 import openai
 import datetime
+import subprocess
+import trimesh
 
 os.system("echo off")
 os.system("color a")
@@ -254,6 +257,20 @@ def enable_ip_logger():
     show_results(ip, hostname, city, region, country, loc, isp, postal, timezone)
     print("\n")
 
+def generate_3d_model(description, output_path):
+    """Create a simple 3D model based on the description and save it."""
+    desc = description.lower()
+    if "sphere" in desc:
+        mesh = trimesh.creation.icosphere()
+    elif "cylinder" in desc:
+        mesh = trimesh.creation.cylinder(radius=1.0, height=2.0)
+    elif "cone" in desc:
+        mesh = trimesh.creation.cone(radius=1.0, height=2.0)
+    else:
+        mesh = trimesh.creation.box()
+    mesh.export(output_path)
+
+
 # Başlangıçta sesli moda geçiş yapalım
 voice_mode = True
 
@@ -330,6 +347,25 @@ def process_query(query):
             image_url = photo['data'][0]['url']
             webbrowser.open(image_url, new=2)
             time.sleep(1)
+
+    elif "design a 3d object" in query or "create a 3d model" in query:
+        prompt = "What 3D object should I design?"
+        if voice_mode:
+            speak(prompt)
+            obj_desc = listen_for_command()
+        else:
+            obj_desc = input("3D Object: ")
+        if obj_desc:
+            desktop = os.path.join(os.path.expanduser("~"), "Desktop")
+            output_file = os.path.join(desktop, "friday_model.obj")
+            generate_3d_model(obj_desc, output_file)
+            response = f"3D model saved to {desktop}."
+            if os.name == "nt":
+                os.startfile(desktop)
+            elif sys.platform == "darwin":
+                subprocess.call(["open", desktop])
+            else:
+                subprocess.call(["xdg-open", desktop])
 
     elif "open desktop" in query or "open my desktop" in query or "open desktop folder" in query or "open my desktop folder" in query or "open desktop directory" in query or "open my desktop directory" in query:
         response = "Opening Desktop folder Sir."
