@@ -12,7 +12,7 @@
 * 🌦️ Real-time weather info using WeatherAPI
 * 🧠 Natural responses via LLM Mistral
 * 🎨 Image generation via DALL·E 3
-* 🧊 3D model creation using `trimesh`
+* 🧊 3D model creation using `trimesh` and `shap-e`
 * 🕵️ IP logger with email report and GUI display
 * 🪿 Tkinter GUI for result display
 * 🌐 Chat and Voice modes with easy switching
@@ -25,8 +25,10 @@
 Install required packages:
 
 ```bash
-pip install openai speechrecognition pyttsx3 pillow requests spotipy discord-webhook translate opencv-python psutil python-dotenv trimesh
+pip install openai speechrecognition pyttsx3 pillow requests spotipy discord-webhook translate opencv-python psutil python-dotenv trimesh shap-e
 ```
+
+For 3D printing, install **CuraEngine** and ensure it is available in your `PATH`.
 
 > `tkinter`, `smtplib`, `sys`, and `os` are included in most standard Python installations.
 
@@ -77,7 +79,7 @@ Once launched, say the **keyword** "friday" to activate the assistant. You can s
 | `Friday`                             | Wake the assistant                  |
 | `send email`                         | Starts email sending flow           |
 | `imagine`                            | Generates an image with DALL·E 3    |
-| `design a 3D object`                 | Creates a simple 3D model on Desktop |
+| `design a 3D object`                 | Generates a mesh with shap-e and saves G-code |
 | `enable` (password: `12123112`)      | IP logger activation and GUI report |
 | `say Hello`                          | Repeats your message aloud          |
 | `tell me the weather of my location` | Reports current weather for Ankara  |
