@@ -10,7 +10,7 @@
 * 🔊 Text-to-Speech using `pyttsx3`
 * 📬 Send emails via Gmail SMTP
 * 🌦️ Real-time weather info using WeatherAPI
-* 🧠 Natural responses via OpenAI GPT-3.5
+* 🧠 Natural responses via LLM Mistral
 * 🎨 Image generation via DALL·E 3
 * 🕵️ IP logger with email report and GUI display
 * 🪿 Tkinter GUI for result display
