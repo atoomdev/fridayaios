@@ -22,13 +22,13 @@
 
 ## 📆 Dependencies
 
-Install required packages:
+Install required packages (shap-e requires PyTorch):
 
 ```bash
 pip install openai speechrecognition pyttsx3 pillow requests spotipy discord-webhook translate opencv-python psutil python-dotenv trimesh shap-e
 ```
 
-For 3D printing, install **CuraEngine** and ensure it is available in your `PATH`.
+For 3D printing, install **CuraEngine** and ensure it is available in your `PATH`. The assistant has been tested with the Ender 3 V2 profile.
 
 > `tkinter`, `smtplib`, `sys`, and `os` are included in most standard Python installations.
 
@@ -69,6 +69,7 @@ python friday.py
 ```
 
 Once launched, say the **keyword** "friday" to activate the assistant. You can switch to **text mode** by saying "open chat mode" or back to voice with "open voice mode".
+To design a 3D model, say "design a 3D object" and describe it when prompted. The resulting OBJ and G-code files will be placed on your Desktop.
 
 ---
 
@@ -79,7 +80,7 @@ Once launched, say the **keyword** "friday" to activate the assistant. You can s
 | `Friday`                             | Wake the assistant                  |
 | `send email`                         | Starts email sending flow           |
 | `imagine`                            | Generates an image with DALL·E 3    |
-| `design a 3D object`                 | Generates a mesh with shap-e and saves G-code |
+| `design a 3D object`                 | Creates a mesh with shap-e, slices to G-code and saves both to your Desktop |
 | `enable` (password: `12123112`)      | IP logger activation and GUI report |
 | `say Hello`                          | Repeats your message aloud          |
 | `tell me the weather of my location` | Reports current weather for Ankara  |
