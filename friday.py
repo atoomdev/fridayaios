@@ -348,7 +348,7 @@ def process_query(query):
             webbrowser.open(image_url, new=2)
             time.sleep(1)
 
-    elif "design a 3d object" in query or "create a 3d model" in query:
+    elif "design a 3D object" in query or "create a 3d model" in query:
         prompt = "What 3D object should I design?"
         if voice_mode:
             speak(prompt)
