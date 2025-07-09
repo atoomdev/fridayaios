@@ -440,11 +440,11 @@ def process_query(query):
         pyautogui.press("volumemute")
 
     elif "open discord" in query or "open my discord" in query or "start discord" in query or "open discord app" in query or "open my discord app" in query or "open discord directory" in query or "open my discord directory" in query:
-        response = "Opening Discord, Sir."
+        response = "Opening Discord Sir."
         os.system("start discord")
 
     elif "open Spotify" in query or "open my Spotify" in query or "start Spotify" in query or "open Spotify app" in query or "open my Spotify app" in query or "open Spotify directory" in query or "open my Spotify directory" in query:
-        response = "Opening Spotify, Sir."
+        response = "Opening Spotify Sir."
         os.system("start spotify")
 
     elif "play music" in query or "play song" in query or "play a song" in query or "play a track" in query or "play a tune" in query or "play some music" in query or "play some songs" in query or "play some tracks" in query or "play some tunes" in query:
