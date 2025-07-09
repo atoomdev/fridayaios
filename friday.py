@@ -9,7 +9,6 @@ import requests
 import time
 import smtplib
 import os
-import re
 import pyautogui
 import json
 import openai
