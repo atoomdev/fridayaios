@@ -9,6 +9,7 @@ import requests
 import time
 import smtplib
 import os
+import re
 import pyautogui
 import json
 import openai
@@ -407,6 +408,13 @@ def process_query(query):
         response = "Opening Paint, Sir."
         os.system("start mspaint")
 
+    elif "start" in query:
+        app_name = listen_for_command()
+        speak("Coming right up Sir.")
+        if app_name:
+            response = f"Starting {app_name}"
+            os.system(f"start {app_name}")
+
     elif "open word" in query or "open my word" in query or "open word app" in query or "open my word app" in query or "open word directory" in query or "open my word directory" in query:
         response = "Opening Word, Sir."
         os.system("start winword")
@@ -442,6 +450,7 @@ def process_query(query):
     elif "open discord" in query or "open my discord" in query or "start discord" in query or "open discord app" in query or "open my discord app" in query or "open discord directory" in query or "open my discord directory" in query:
         response = "Opening Discord Sir."
         os.system("start discord")
+
 
     elif "open Spotify" in query or "open my Spotify" in query or "start Spotify" in query or "open Spotify app" in query or "open my Spotify app" in query or "open Spotify directory" in query or "open my Spotify directory" in query:
         response = "Opening Spotify Sir."
