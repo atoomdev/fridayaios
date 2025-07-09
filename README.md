@@ -25,7 +25,7 @@
 Install required packages (shap-e requires PyTorch):
 
 ```bash
-pip install openai speechrecognition pyttsx3 pillow requests spotipy discord-webhook translate opencv-python psutil python-dotenv trimesh shap-e
+pip install spotipy os-sys tkintertable SpeechRecognition pyttsx3 web-browser requests secure-smtplib PyAutoGUI jsons openai DateTime subprocess.run trimesh psutil
 ```
 
 For 3D printing, install **CuraEngine** and ensure it is available in your `PATH`. The assistant has been tested with the Ender 3 V2 profile.
