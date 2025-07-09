@@ -443,9 +443,10 @@ def process_query(query):
         response = "Opening Discord, Sir."
         os.system("start discord")
 
-    elif "open spotify" in query or "open my spotify" in query or "start spotify" in query or "open spotify app" in query or "open my spotify app" in query or "open spotify directory" in query or "open my spotify directory" in query:
+    elif "open Spotify" in query or "open my Spotify" in query or "start Spotify" in query or "open Spotify app" in query or "open my Spotify app" in query or "open Spotify directory" in query or "open my Spotify directory" in query:
         response = "Opening Spotify, Sir."
         os.system("start spotify")
+
     elif "play music" in query or "play song" in query or "play a song" in query or "play a track" in query or "play a tune" in query or "play some music" in query or "play some songs" in query or "play some tracks" in query or "play some tunes" in query:
         response = "Playing music, Sir."
         sp = SpotifyOAuth(client_id="your_client_id",
