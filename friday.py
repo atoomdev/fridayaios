@@ -546,16 +546,26 @@ def run_program():
         recognizer.adjust_for_ambient_noise(source)
 
     while True:
-        # Program starts by listening for the activation keyword
+        # 1. Anahtar kelimeyi (keyword) bekle
         listen_for_keyword(recognizer, mic)
-        if voice_mode:
-            command = listen_for_command()  # Komutu sesli olarak dinle
-        else:
-            command = input("Send Command to Friday: ")  # Komutu yazılı olarak al
-        if command:
-            response = process_query(command)  # Komutu işle
-            if response and voice_mode:
-                speak(response)  # Yanıtı sesli olarak ver
+
+        # 2. Anahtar kelime algılandıysa komut dinleme döngüsüne gir
+        while True:
+            if voice_mode:
+                command = listen_for_command()  # sesli komut al
+            else:
+                command = input("Send Command to Friday: ")  # yazılı komut al
+
+            if command:
+                response = process_query(command)  # komutu işle
+                if response:
+                    if voice_mode:
+                        speak(response)
+                # Komut algılandı ve işlendi → tekrar command döngüsüne gir
+            else:
+                # Komut anlaşılmadıysa → tekrar keyword beklemeye dön
+                break
+
 
 if __name__ == "__main__":
     run_program()
