@@ -111,11 +111,9 @@ def listen_for_command():
         return command
     except sr.UnknownValueError:
         print("Sorry, I did not understand that.")
-        speak("Sorry, I did not understand that.")
         return None
     except sr.RequestError as e:
         print(f"Could not request results; {e}")
-        speak(f"Could not request results; {e}")
         return None
 
 def send_email(subject, message):
