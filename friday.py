@@ -365,6 +365,10 @@ def process_query(query):
             else:
                 subprocess.call(["xdg-open", desktop])
 
+    elif "clear" in query:
+        os.system("cls")
+        print(light)
+
     elif "open desktop" in query or "open my desktop" in query or "open desktop folder" in query or "open my desktop folder" in query or "open desktop directory" in query or "open my desktop directory" in query:
         response = "Opening Desktop folder Sir."
         os.startfile("C:\\Users\\atesa\\Desktop")
