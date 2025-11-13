@@ -326,10 +326,7 @@ def process_query(query):
     
     elif "volume up" in query:
         pyautogui.press("volumeup")
-
-    elif "open Friday" in query or "open Friday ai" in query or "start Friday" in query or "launch Friday" in query:
-        run_python_file("C:\\Users\\atesa\\Desktop\\ㅤ\\Ateş\\Projeler\\Yazılım\\Projeler\\Friday AI OS\\src\\main\\fridayaios\\friday.py")
-
+        
     elif "imagine" in query:
         response = "Tell me, what should I imagine?"
         if voice_mode:
