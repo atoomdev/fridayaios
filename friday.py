@@ -196,7 +196,9 @@ def generate_response(prompt):
         return result.get("response", "").strip()
     except Exception as e:
         return str(e)
-
+    
+def run_python_file(file_path):
+    subprocess.Popen([sys.executable, file_path])
 
 def show_results(ip, hostname, city, region, country, loc, isp, postal, timezone):
     window = tk.Tk()
@@ -324,6 +326,9 @@ def process_query(query):
     
     elif "volume up" in query:
         pyautogui.press("volumeup")
+
+    elif "open Friday" in query or "open Friday ai" in query or "start Friday" in query or "launch Friday" in query:
+        run_python_file("C:\\Users\\atesa\\Desktop\\ㅤ\\Ateş\\Projeler\\Yazılım\\Projeler\\Friday AI OS\\src\\main\\fridayaios\\friday.py")
 
     elif "imagine" in query:
         response = "Tell me, what should I imagine?"
