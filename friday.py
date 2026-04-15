@@ -1,6 +1,7 @@
 from spotipy.oauth2 import SpotifyOAuth
 from sys import exit
 import sys
+from pathlib import Path
 import tkinter as tk
 import speech_recognition as sr
 import pyttsx3
@@ -15,8 +16,17 @@ import openai
 import datetime
 import subprocess
 import trimesh
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types # type: ignore
+
+BASE_DIR = Path(__file__).resolve().parent
+ENV_FILE = BASE_DIR / ".env"
+
+if not ENV_FILE.exists():
+    ENV_FILE.write_text("GEMINI_API_KEY=\n", encoding="utf-8")
+
+load_dotenv(dotenv_path=ENV_FILE)
 
 os.system("echo off")
 os.system("color a")
@@ -99,12 +109,30 @@ def listen_for_keyword(recognizer, mic, keyword="friday"):
             print(f"Could not request results; {e}")
 
 def listen_for_command():
-    time.sleep(0.4)
+    time.sleep(0.2)
+
     recognizer = sr.Recognizer()
+    recognizer.dynamic_energy_threshold = True
+    recognizer.pause_threshold = 1.0
+    recognizer.non_speaking_duration = 0.5
+    recognizer.operation_timeout = None
+
     mic = sr.Microphone()
+
     print("Listening for command...")
+
     with mic as source:
-        audio = recognizer.listen(source, phrase_time_limit=3)
+        recognizer.adjust_for_ambient_noise(source, duration=0.4)
+        try:
+            audio = recognizer.listen(
+                source,
+                timeout=5,
+                phrase_time_limit=6
+            )
+        except sr.WaitTimeoutError:
+            print("No command detected.")
+            return None
+
     try:
         command = recognizer.recognize_google(audio)
         print(f"You said: {command}")
@@ -185,6 +213,7 @@ def get_weather():
 def generate_response(prompt):
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
+        print(f"DEBUG: GEMINI_API_KEY is missing. Checked environment and {ENV_FILE}")
         raise RuntimeError("GEMINI_API_KEY environment variable is not set.")
 
     try:
@@ -201,7 +230,7 @@ def generate_response(prompt):
                 ),
                 config=types.GenerateContentConfig(
                     temperature=0.3,
-                    max_output_tokens=120,
+                    max_output_tokens=300,
                 ),
             )
 
