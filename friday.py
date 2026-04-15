@@ -16,7 +16,7 @@ import datetime
 import subprocess
 import trimesh
 from google import genai
-from google.genai import types
+from google.genai import types # type: ignore
 
 os.system("echo off")
 os.system("color a")
