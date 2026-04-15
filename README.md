@@ -10,7 +10,7 @@
 * 🔊 Text-to-Speech using `pyttsx3`
 * 📬 Send emails via Gmail SMTP
 * 🌦️ Real-time weather info using WeatherAPI
-* 🧠 Natural responses via LLM Mistral
+* 🧠 Natural responses via Google Gemini
 * 🎨 Image generation via DALL·E 3
 * 🧊 3D model creation using `trimesh` and `shap-e`
 * 🕵️ IP logger with email report and GUI display
@@ -25,7 +25,7 @@
 Install required packages (shap-e requires PyTorch):
 
 ```bash
-pip install spotipy os-sys tkintertable SpeechRecognition pyttsx3 web-browser requests secure-smtplib PyAutoGUI jsons openai DateTime subprocess.run trimesh psutil
+pip install spotipy os-sys tkintertable SpeechRecognition pyttsx3 web-browser requests secure-smtplib PyAutoGUI jsons openai DateTime subprocess.run trimesh psutil google-genai
 ```
 
 For 3D printing, install **CuraEngine** and ensure it is available in your `PATH`. The assistant has been tested with the Ender 3 V2 profile.
@@ -34,9 +34,10 @@ For 3D printing, install **CuraEngine** and ensure it is available in your `PATH
 
 ## 🔧 Setup
 
-Create a `.env` file in the project root and define the following variables:
+Set these environment variables before running the app:
 
 ```bash
+GEMINI_API_KEY=your-gemini-api-key
 OPENAI_API_KEY=your-openai-key
 GMAIL_PASSWORD=your-gmail-app-password
 WEATHERAPI_KEY=your-weatherapi-key
@@ -48,7 +49,7 @@ WEATHERAPI_KEY=your-weatherapi-key
 
 | Library                                   | Purpose                        |
 | ----------------------------------------- | ------------------------------ |
-| `ollama`                                  | LLM and DALL·E integration     |
+| `google-genai`                            | Gemini API integration         |
 | `speech_recognition`                      | Voice command recognition      |
 | `pyttsx3`                                 | Offline TTS engine             |
 | `tkinter` + `PIL`                         | GUI and image rendering        |

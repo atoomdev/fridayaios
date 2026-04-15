@@ -15,8 +15,14 @@ import openai
 import datetime
 import subprocess
 import trimesh
-from google import genai
-from google.genai import types # type: ignore
+try:
+    from google import genai
+    from google.genai import errors, types
+except ImportError as exc:
+    raise ImportError(
+        "The current official Google Gemini SDK is missing. "
+        "Install it with: python -m pip install --user -U google-genai"
+    ) from exc
 
 os.system("echo off")
 os.system("color a")
@@ -208,6 +214,8 @@ def generate_response(prompt):
         return (response.text or "").strip() or "I could not generate a response right now."
     except TimeoutError:
         return "Gemini API request timed out."
+    except errors.APIError as e:
+        return f"Gemini API error: {e}"
     except Exception as e:
         return f"Gemini API error: {e}"
     
