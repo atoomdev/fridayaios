@@ -15,6 +15,8 @@ import openai
 import datetime
 import subprocess
 import trimesh
+from google import genai
+from google.genai import types
 
 os.system("echo off")
 os.system("color a")
@@ -58,8 +60,6 @@ light = """
 """
 print(light)
 
-
-openai.api_key = 'sk-proj-EE0umSWxMEOFEu9ooOGnT3BlbkFJs4WUmcMl9ugRcfL0m7i3'
 
 # Konuşma motoru başlatma
 engine = pyttsx3.init()
@@ -183,19 +183,33 @@ def get_weather():
 
 
 def generate_response(prompt):
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY environment variable is not set.")
+
     try:
-        response = requests.post(
-            "http://localhost:11434/api/generate",
-            json={
-                "model": "mistral",
-                "prompt": f"You are Friday OS, a highly intelligent local AI agent with FULL Windows OS access. Give a short and clear answer in 1-2 sentences.\n\nUser: {prompt}\n\nResponse:",
-                "stream": False
-            }
-        )
-        result = response.json()
-        return result.get("response", "").strip()
+        with genai.Client(
+            api_key=api_key,
+            http_options=types.HttpOptions(timeout=30000)
+        ) as client:
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=(
+                    "You are Friday OS, a highly intelligent AI with FULL Windows OS access. "
+                    "Give short and clear answers in 1-2 sentences.\n\n"
+                    f"User: {prompt}\n\nResponse:"
+                ),
+                config=types.GenerateContentConfig(
+                    temperature=0.3,
+                    max_output_tokens=120,
+                ),
+            )
+
+        return (response.text or "").strip() or "I could not generate a response right now."
+    except TimeoutError:
+        return "Gemini API request timed out."
     except Exception as e:
-        return str(e)
+        return f"Gemini API error: {e}"
     
 def run_python_file(file_path):
     subprocess.Popen([sys.executable, file_path])
