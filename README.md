@@ -1,4 +1,4 @@
-# 💡 Friday AI OS
+# 💡 Friday AI OS ![visitors](https://visitor-badge.laobi.icu/badge?page_id=fridayaios)
 
 **Friday AI Assistant** is a powerful, modular, and lightweight AI assistant written in Python. It supports both voice and text interaction, integrates with LLM and DALL·E, provides real-time weather data, sends emails, logs IP information, and more. Designed to run efficiently even on modest systems, it serves as a fully interactive, customizable AI companion.
 
