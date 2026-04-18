@@ -147,9 +147,9 @@ def listen_for_command():
 def send_email(subject, message):
     smtp_server = "smtp.gmail.com"
     port = 587
-    sender_email = "drmilonbot@gmail.com"
-    sender_password = "eqmpakgannkiisdn"
-    recipient_email = "atesaltinkaynak@gmail.com"
+    sender_email = os.getenv("SENDER_USERNAME")
+    sender_password = os.getenv("SENDER_PASSWORD")
+    recipient_email = os.getenv("RECIPIENT_EMAIL")
 
     email_message = f"Subject: {subject}\n\n{message}"
 
@@ -170,8 +170,8 @@ def sleep_mode():
 def send_email_to(subject, message):
     smtp_server = "smtp.gmail.com"
     port = 587
-    sender_email = "drmilonbot@gmail.com"
-    sender_password = "eqmpakgannkiisdn"
+    sender_email = os.getenv("SENDER_USERNAME")
+    sender_password = os.getenv("SENDER_PASSWORD")
     recipient_email = input("Recipient Mail:")
 
     email_subject = subject
