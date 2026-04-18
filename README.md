@@ -1,6 +1,6 @@
 # 💡 Friday AI OS ![visitors](https://visitor-badge.laobi.icu/badge?page_id=fridayaios)
 
-**Friday AI Assistant** is a powerful, modular, and lightweight AI assistant written in Python. It supports both voice and text interaction, integrates with LLM and DALL·E, provides real-time weather data, sends emails, logs IP information, and more. Designed to run efficiently even on modest systems, it serves as a fully interactive, customizable AI companion.
+**Friday AI Assistant** is a powerful, modular, and lightweight AI assistant written in Python. It supports both voice and text interaction, integrates with LLM and DALL·E, provides real-time weather data, sends emails, and more. Designed to run efficiently even on modest systems, it serves as a fully interactive, customizable AI companion.
 
 ---
 
@@ -16,7 +16,6 @@
 * 🕵️ IP logger with email report and GUI display
 * 🪿 Tkinter GUI for result display
 * 🌐 Chat and Voice modes with easy switching
-* 🔐 Secure IP logger access with password
 
 ---
 
@@ -84,7 +83,6 @@ To design a 3D model, say "design a 3D object" and describe it when prompted. Th
 | `send email`                         | Starts email sending flow           |
 | `imagine`                            | Generates an image with DALL·E 3    |
 | `design a 3D object`                 | Creates a mesh with shap-e, slices to G-code and saves both to your Desktop |
-| `enable` (password: `12123112`)      | IP logger activation and GUI report |
 | `say Hello`                          | Repeats your message aloud          |
 | `tell me the weather of my location` | Reports current weather for Ankara  |
 | `open chat mode` / `open voice mode` | Toggle between input modes          |
