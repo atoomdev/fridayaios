@@ -39,8 +39,10 @@ Set these environment variables before running the app:
 ```bash
 GEMINI_API_KEY=your-gemini-api-key
 OPENAI_API_KEY=your-openai-key
-GMAIL_PASSWORD=your-gmail-app-password
-WEATHERAPI_KEY=your-weatherapi-key
+SENDER_USERNAME=your-gmail-app-username
+SENDER_PASSWORD=your-gmail-app-password
+RECIPIENT_EMAIL=your-email-address
+
 ```
 
 ---

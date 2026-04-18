@@ -18,7 +18,7 @@ import subprocess
 import trimesh
 from dotenv import load_dotenv
 from google import genai
-from google.genai import types # type: ignore
+from google.genai import types
 
 BASE_DIR = Path(__file__).resolve().parent
 ENV_FILE = BASE_DIR / ".env"
@@ -73,12 +73,12 @@ print(light)
 
 # Konuşma motoru başlatma
 engine = pyttsx3.init()
-engine.setProperty('rate', 190)  # Konuşma hızı (varsayılan genelde 200’dür)
+engine.setProperty('rate', 190)  
 engine.setProperty('volume', 1.0)
 
-# Ses seçimi (0 = erkek, 1 = kadın — bilgisayara göre değişebilir)
+
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[0].id)  # Dilersen 1 olarak da değiştirebilirsin
+engine.setProperty('voice', voices[0].id)  
 
 def speak(text):
     engine.say(text)
@@ -88,7 +88,7 @@ def listen_for_keyword(recognizer, mic, keyword="friday"):
     """Continuously listen for the given keyword using the provided recognizer
     and microphone instances."""
     time.sleep(0.4)
-    print("Listening for keyword...")  # Sadece başlangıçta mesajı yazdır
+    print("Listening for keyword...") 
     while True:
         with mic as source:
             try:
@@ -161,7 +161,7 @@ def send_email(subject, message):
 def sleep_mode():
     print("Entering sleep mode...")
     speak("Entering sleep mode...")
-    input("Press Enter to wake up...")  # Kullanıcıdan bir tuşa basmasını bekle
+    input("Press Enter to wake up...")
     print("Waking up...")
     speak("I am at your service sir.")
 
@@ -230,7 +230,7 @@ def generate_response(prompt):
                 ),
                 config=types.GenerateContentConfig(
                     temperature=0.3,
-                    max_output_tokens=300,
+                    max_output_tokens=600,
                 ),
             )
 
@@ -314,7 +314,7 @@ def generate_3d_model(description, output_path):
     mesh.export(output_path)
 
 
-# Başlangıçta sesli moda geçiş yapalım
+
 voice_mode = True
 
 def process_query(query):
@@ -593,24 +593,24 @@ def run_program():
         recognizer.adjust_for_ambient_noise(source)
 
     while True:
-        # 1. Anahtar kelimeyi (keyword) bekle
+       
         listen_for_keyword(recognizer, mic)
 
-        # 2. Anahtar kelime algılandıysa komut dinleme döngüsüne gir
+        
         while True:
             if voice_mode:
-                command = listen_for_command()  # sesli komut al
+                command = listen_for_command()  
             else:
-                command = input("Send Command to Friday: ")  # yazılı komut al
+                command = input("Send Command to Friday: ")  
 
             if command:
-                response = process_query(command)  # komutu işle
+                response = process_query(command)  
                 if response:
                     if voice_mode:
                         speak(response)
-                # Komut algılandı ve işlendi → tekrar command döngüsüne gir
+                
             else:
-                # Komut anlaşılmadıysa → tekrar keyword beklemeye dön
+               
                 break
 
 
