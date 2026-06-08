@@ -211,10 +211,20 @@ def get_weather():
 
 
 def generate_response(prompt):
+    global conversation_history
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         print(f"DEBUG: GEMINI_API_KEY is missing. Checked environment and {ENV_FILE}")
         raise RuntimeError("GEMINI_API_KEY environment variable is not set.")
+
+    # Geçmiş çok uzarsa en eskilerini at
+    if len(conversation_history) > MAX_HISTORY_TURNS * 2:
+        conversation_history[:] = conversation_history[-(MAX_HISTORY_TURNS * 2):]
+
+    # Geçmiş + mevcut mesajı birleştir
+    contents = list(conversation_history) + [
+        types.Content(role="user", parts=[types.Part(text=prompt)])
+    ]
 
     try:
         with genai.Client(
@@ -223,18 +233,24 @@ def generate_response(prompt):
         ) as client:
             response = client.models.generate_content(
                 model="gemini-2.5-flash",
-                contents=(
-                    "You are Friday OS, a highly intelligent AI with FULL Windows OS access. "
-                    "Give short and clear answers in 1-2 sentences.\n\n"
-                    f"User: {prompt}\n\nResponse:"
-                ),
+                contents=contents,
                 config=types.GenerateContentConfig(
+                    system_instruction=(
+                        "You are Friday OS, a highly intelligent AI with FULL Windows OS access. "
+                        "Give short and clear answers in 1-2 sentences."
+                    ),
                     temperature=0.3,
                     max_output_tokens=600,
                 ),
             )
 
-        return (response.text or "").strip() or "I could not generate a response right now."
+        result = (response.text or "").strip() or "I could not generate a response right now."
+
+        # Kullanıcı + model mesajını geçmişe ekle
+        conversation_history.append(types.Content(role="user", parts=[types.Part(text=prompt)]))
+        conversation_history.append(types.Content(role="model", parts=[types.Part(text=result)]))
+
+        return result
     except TimeoutError:
         return "Gemini API request timed out."
     except Exception as e:
@@ -316,6 +332,8 @@ def generate_3d_model(description, output_path):
 
 
 voice_mode = True
+conversation_history = []
+MAX_HISTORY_TURNS = 10
 
 def process_query(query):
     global voice_mode
@@ -409,6 +427,10 @@ def process_query(query):
                 subprocess.call(["open", desktop])
             else:
                 subprocess.call(["xdg-open", desktop])
+
+    elif "clear history" in query or "clear chat" in query or "reset conversation" in query or "new conversation" in query or "forget everything" in query:
+        conversation_history.clear()
+        response = "Conversation history cleared, Sir."
 
     elif "clear" in query:
         os.system("cls")
